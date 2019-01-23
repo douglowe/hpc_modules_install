@@ -33,10 +33,38 @@ module load priv_libs/gcc/hdf5/1.10.4
 export LDFLAGS=-L$HDF5LIB
 export CPPFLAGS=-I$HDF5INCLUDE
 
-./configure --prefix=$APPDIR --enable-remote-fortran-bootstrap --enable-large-file-tests 2>&1 | tee ../config-$APPVER.log
+# current state of --enable-remote-fortran-bootstrap is not useable (doesn't seem to carry config settings from main script), 
+#    so we will replicate the process manually below. Check at future date to see if it is more useable.
+#./configure --prefix=$APPDIR --enable-remote-fortran-bootstrap --enable-large-file-tests 2>&1 | tee ../config-$APPVER.log
+./configure --prefix=$APPDIR --enable-large-file-tests 2>&1 | tee ../config-$APPVER.log
 make 2>&1 | tee make-$APPVER.log
 make check 2>&1 | tee make-check-$APPVER.log
 make install 2>&1 | tee make-install-$APPVER.log
+
+
+# installing fortran libraries
+module load services/git
+
+TARGVERSION="v4.4.5"
+
+git clone http://github.com/unidata/netcdf-fortran
+cd netcdf-fortran
+git checkout $TARGVERSION
+
+# need to add the netcdf lib and include paths too - so make sure to run make install above before doing this!
+export CPPFLAGS="-I$HDF5INCLUDE -I$APPDIR/include"
+export LDFLAGS="-L$HDF5LIB -L$APPDIR/lib"
+# have to set the library pathways as well as using the LDFLAGS, 
+#   as the netcdf-fortran compiler is more of a pain than the netcdf-c compiler
+export LD_LIBRARY_PATH="$APPDIR/lib;$HDF5LIB"
+
+./configure --prefix=$APPDIR --enable-large-file-tests 2>&1 | tee config-$APPVER.log
+make 2>&1 | tee make-$APPVER.log
+make check 2>&1 | tee make-check-$APPVER.log
+make install 2>&1 | tee make-install-$APPVER.log
+
+
+
 
 
 #sudo chmod -R og+rX $APPROOT
