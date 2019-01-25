@@ -3,8 +3,10 @@ cat /etc/redhat-release
 # Location of final root directory
 APPROOT=/mnt/iusers01/support/mbessdl2/privatemodules_packages/csf3/libs/gcc/hdf5
 
-APPBASE=1.10
-APPVER=$APPBASE.4
+APPBASE=1.8
+APPVER=$APPBASE.21
+#APPBASE=1.10
+#APPVER=$APPBASE.4
 APPDIR=$APPROOT/$APPVER
 
 #sudo mkdir $APPROOT
@@ -51,144 +53,83 @@ cd $MDIR
 MPATH=priv_libs/gcc/hdf5/${APPVER}
 
 
+
+
+
+
+
+
+
+
 #### module script
 # It is a bit of a faff writing a bash script from a bash script - you need to ensure
 # any special characters you don't want to be executed are escaped out (using \).
-echo "#%Module1.0#####################################################################
+echo "#%Module1.0####################################################
 ##
-## Alces Clusterware - Application module file
-## Copyright (c) 2008-2015 Alces Software Ltd
+## CSF3 LIBRARY-TEMPLATE Modulefile
 ##
-## path: ${MPATH}
-################################################################################
-if { [info exists ::env(ALCES_TRACE)] } {
-    puts stderr \" -> \$::ModulesCurrentModulefile\"
-}
-
-if { [namespace exists alces] == 0 } {
-    if { [info exists ::env(MODULES_ALCES_TCL)] } { 
-    source \$::env(MODULES_ALCES_TCL)
-    } else {
-    # compatibility mode for module use without availability of Alces tools
-    proc ::process {body} { eval \$body }
-    proc ::depend {module {version \"\"} {_ \"\"}} { 
-        set req [regsub {\-} \$module {/}]/\$version
-        if { [catch { prereq \$req }] } {
-        puts stderr \"Could not satisfy prereq: \$req\"
-        break
-        }
-    }
-    proc ::alces {_ module} { return \$module }
-    proc ::search {_ _ _} { }
-        proc ::assert_packages { } { }
-    }
+##
+proc getenv {key {defaultvalue {}}} {
+  global env; expr {[info exist env(\$key)]?\$env(\$key):\$defaultvalue}
 }
 
 proc ModulesHelp { } {
-    global app
-    global appdir
-    global appcaps
-    global version
+    global APPVER APPNAME APPURL APPCSFURL COMPVER COMPNAME
+
     puts stderr \"
-                       ======== HDF5 ========                       
-        Data model, library, and file format for storing and         
-                            managing data                            
-                        =====================                        
+    Adds \$APPNAME \$APPVER to your PATH environment variable and any necessary
+    libraries. It has been compiled with the \$COMPNAME \$COMPVER compiler.
 
-This module sets up your environment for the use of the 'hdf5_serial'
-application. This module sets up version '${APPVER}' of the
-application.
-
-
->> SYNOPSIS <<
-
-HDF5 is a data model, library, and file format for storing and
-managing data. It supports an unlimited variety of datatypes, and is
-designed for flexible and efficient I/O and for high volume and
-complex data. HDF5 is portable and is extensible, allowing
-applications to evolve in their use of HDF5. The HDF5 Technology
-suite includes tools and applications for managing, manipulating,
-viewing, and analyzing data in the HDF5 format.
-
-
->> LICENSING <<
-
-This package is made available subject to the following license(s):
-
-\tBSD-style, see http://www.hdfgroup.org/products/licenses.html
-
-Please refer to the website for further details regarding licensing.
-
-
->> FURTHER INFORMATION <<
-
-More information about this software can be found at the website:
-
-\thttp://www.hdfgroup.org/HDF5/
-
-For further details regarding this module, including the environment
-modifications it will apply, execute:
-
-\tmodule show ${MPATH}
-
-
->> GET STARTED <<
-
-Please refer to the website for further details on usage of this
-package.
+    For information on how to run \$APPNAME on the CSF please see:
+    \$APPCSFURL
+    
+    For application specific info see:
+    \$APPURL
 \"
 }
 
-set     app      hdf5
-set     version  ${APPVER}
-set     appcaps  HDF5
-set     appdir   ${APPDIR}
+set    APPVER         ${APPVER}
+set    APPNAME        hdf5
+set    APPNAMECAPS    HDF5
+set    APPURL        https://support.hdfgroup.org/HDF5/
+set    APPCSFURL    http://ri.itservices.manchester.ac.uk/csf3/software/libraries/$APPNAME
+# Default gcc will be
+set    COMPVER        4.8.5
+set    COMPNAME    gcc
+set    COMPDIR        \${COMPNAME}
 
-#if { [ namespace exists alces ] } { set dependencies \"     Dependencies: [alces pretty libs/gcc/system] (using: [alces pretty [search libs-gcc 4.8.5 0f6c756b]])\" } { set dependencies \"\" }
-module-whatis   \"
+module-whatis    \"Adds \$APPNAME \$APPVER to your environment\"
 
-            Title: HDF5
-          Summary: Data model, library, and file format for storing and managing data
-          License: BSD-style, see http://www.hdfgroup.org/products/licenses.html
-            Group: Libraries
-              URL: http://www.hdfgroup.org/HDF5/
+# Do we want to ensure the user (or another modulefile) has loaded the compiler?
+# Can be a dirname (any modulefile from that dir) or a specific version.
+# Multiple names on one line mean this OR that OR theothere
+# Multiple prereq lines mean prereq this AND prepreq that AND prereq theother
+#prereq  priv_libs/\$COMPNAME/zlib/1.2.11
 
-             Name: hdf5
-          Version: ${APPVER}
-           Module: [alces pretty ${MPATH}]
-      Module path: ${MDIR}/${APPVER}
-     Package path: ${APPDIR}
+# Do we want to prohibit use of other modulefiles (similar rules to above)
+# conflict libs/SOMELIB/older.version
 
-       Repository: 
-          Package: 
-      Last update: 2019-01-22
+# Do we want to load dependency modulefiles on behalf of the user?
+# You MIGHT HAVE TO REMOVE THE prereq MODULEFILES FROM ABOVE
+# module load libs/otherlib/7.8.9
+# module load ......
+module load priv_libs/\$COMPNAME/zlib/1.2.11
 
-          Builder: Doug Lowe
-       Build date: 2019-01-22
-         Compiler: [alces pretty compilers/gcc/system]
-           System: Linux 3.10.0-693.17.1.el7.x86_64 x86_64
-             Arch: Intel(R) Xeon(R) CPU E5-2650 v2 @ 2.60GHz, 2x8 (2f9d4464)
-\\\$dependencies
+set     APPDIR    /mnt/iusers01/support/mbessdl2/privatemodules_packages/csf3/libs/\$COMPNAME/\$APPNAME/\$APPVER
 
-For further information, execute:
+setenv        \${APPNAMECAPS}DIR      \$APPDIR
+setenv        \${APPNAMECAPS}_HOME    \$APPDIR
+setenv        \${APPNAMECAPS}BIN      \$APPDIR/bin
+setenv        \${APPNAMECAPS}LIB      \$APPDIR/lib
+setenv        \${APPNAMECAPS}INCLUDE  \$APPDIR/include
 
-    module help ${MPATH}
-\"
-
-#assert_packages
-
-#process {
-#depend libs-gcc 4.8.5 0f6c756b
-#
-#conflict apps/hdf5_serial
-#}
-
-setenv \${appcaps}DIR \${appdir}
-setenv \${appcaps}BIN \${appdir}/bin
-setenv \${appcaps}LIB \${appdir}/lib
-setenv \${appcaps}INCLUDE \${appdir}/include
-
-prepend-path PATH \${appdir}/bin
-prepend-path LD_LIBRARY_PATH \${appdir}/lib
-
+# Typical env vars to help a compiler find this library and header files
+# and to also allow the library to be found when your compiled code is run.
+prepend-path    C_INCLUDE_PATH    \$APPDIR/include
+prepend-path    CPATH             \$APPDIR/include
+prepend-path    LIBRARY_PATH      \$APPDIR/lib
+prepend-path    LD_LIBRARY_PATH   \$APPDIR/lib
+prepend-path    PATH              \$APPDIR/bin
+prepend-path    MANPATH           \$APPDIR/share/man
+# Add any other vars your need...
 " > $APPVER
