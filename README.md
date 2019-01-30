@@ -1,7 +1,7 @@
 # csf3_mod_install
 Module install scripts for CSF3 system. Intended for creating private modules only at the moment.
 
-## WRF & EMEP
+## WRF
 
 Install these packages in this order:
 1) zlib_install_script_gcc_csf3.sh
