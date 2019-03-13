@@ -1,7 +1,10 @@
 cat /etc/redhat-release
 
 # Location of final root directory
-APPROOT=/mnt/iusers01/support/mbessdl2/privatemodules_packages/csf3/libs/gcc/jasper
+INROOT=/opt/apps/libs
+#APPROOT=/mnt/iusers01/support/mbessdl2/privatemodules_packages/csf3/libs/gcc/jasper
+APPROOT=$INROOT/gcc/jasper
+
 
 APPVER=2.0.14
 APPDIR=$APPROOT/$APPVER
@@ -46,10 +49,11 @@ make install 2>&1 | tee make-install-$APPVER.log
 
 
 #sudo chmod -R og+rX $APPROOT
-chmod -R og+rX $APPROOT
+chmod -R og+rX $APPDIR
 
 # module file location
-MDIR=/mnt/iusers01/support/mbessdl2/privatemodules/priv_libs/gcc/jasper
+#MDIR=/mnt/iusers01/support/mbessdl2/privatemodules/priv_libs/gcc/jasper
+MDIR=/opt/apps/modules/libs/gcc/jasper
 
 
 #sudo mkdir $MDIR
@@ -58,7 +62,7 @@ mkdir $MDIR
 
 cd $MDIR
 
-MPATH=priv_libs/gcc/jasper/${APPVER}
+MPATH=libs/gcc/jasper/${APPVER}
 
 
 #### module script
@@ -100,22 +104,7 @@ set    COMPDIR        \${COMPNAME}
 
 module-whatis    \"Adds \$APPNAME \$APPVER to your environment\"
 
-# Do we want to ensure the user (or another modulefile) has loaded the compiler?
-# Can be a dirname (any modulefile from that dir) or a specific version.
-# Multiple names on one line mean this OR that OR theothere
-# Multiple prereq lines mean prereq this AND prepreq that AND prereq theother
-#prereq  priv_libs/\$COMPNAME/zlib/1.2.11
-
-# Do we want to prohibit use of other modulefiles (similar rules to above)
-# conflict libs/SOMELIB/older.version
-
-# Do we want to load dependency modulefiles on behalf of the user?
-# You MIGHT HAVE TO REMOVE THE prereq MODULEFILES FROM ABOVE
-# module load libs/otherlib/7.8.9
-# module load ......
-#module load priv_libs/\$COMPNAME/zlib/1.2.11
-
-set     APPDIR    /mnt/iusers01/support/mbessdl2/privatemodules_packages/csf3/libs/\$COMPNAME/\$APPNAME/\$APPVER
+set     APPDIR    $INROOT/\$COMPNAME/\$APPNAME/\$APPVER
 
 setenv        \${APPNAMECAPS}DIR      \$APPDIR
 setenv        \${APPNAMECAPS}_HOME    \$APPDIR

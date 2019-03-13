@@ -1,7 +1,9 @@
 cat /etc/redhat-release
 
 # Location of final root directory
-APPROOT=/mnt/iusers01/support/mbessdl2/privatemodules_packages/csf3/libs/gcc/hdf5
+INROOT=/opt/apps/libs/
+#APPROOT=/mnt/iusers01/support/mbessdl2/privatemodules_packages/csf3/libs/gcc/hdf5
+APPROOT=$INROOT/gcc/hdf5
 
 APPBASE=1.8
 APPVER=$APPBASE.21
@@ -18,6 +20,9 @@ cd $APPROOT
 mkdir $APPVER archive build
 cd archive
 
+### not doing the above tasks, as we are sharing space with another admin - so
+### look in archive/mbessdl2 and build/mbessdl2 instead
+
 module load tools/env/proxy2
 
 wget https://support.hdfgroup.org/ftp/HDF5/releases/hdf5-${APPBASE}/hdf5-${APPVER}/src/hdf5-${APPVER}.tar.gz
@@ -28,20 +33,23 @@ tar xzf ../archive/hdf5-${APPVER}.tar.gz
 cd hdf5-${APPVER}
 
 
-module load use.own
-module load priv_libs/gcc/zlib/1.2.11
+#module load use.own
+#module load priv_libs/gcc/zlib/1.2.11
+module load libs/gcc/zlib/1.2.11
 
-./configure --prefix=$APPDIR --enable-fortran --enable-cxx --with-zlib=$ZLIBHOME/include,$ZLIBHOME/lib 2>&1 | tee ../config-$APPVER.log
+./configure --prefix=$APPDIR --enable-fortran --enable-cxx --with-zlib=$ZLIB_HOME/include,$ZLIB_HOME/lib 2>&1 | tee ../config-$APPVER.log
 make 2>&1 | tee make-$APPVER.log
 make check 2>&1 | tee make-check-$APPVER.log
 make install 2>&1 | tee make-install-$APPVER.log
 
 
 #sudo chmod -R og+rX $APPROOT
-chmod -R og+rX $APPROOT
+chmod -R og+rX $APPDIR
 
 # module file location
-MDIR=/mnt/iusers01/support/mbessdl2/privatemodules/priv_libs/gcc/hdf5
+#MDIR=/mnt/iusers01/support/mbessdl2/privatemodules/priv_libs/gcc/hdf5
+MROOT=/opt/apps/modules/libs
+MDIR=$MROOT/gcc/hdf5
 
 
 #sudo mkdir $MDIR
@@ -50,7 +58,8 @@ mkdir $MDIR
 
 cd $MDIR
 
-MPATH=priv_libs/gcc/hdf5/${APPVER}
+#MPATH=priv_libs/gcc/hdf5/${APPVER}
+MPATH=libs/gcc/hdf5/${APPVER}
 
 
 
@@ -100,22 +109,11 @@ set    COMPDIR        \${COMPNAME}
 
 module-whatis    \"Adds \$APPNAME \$APPVER to your environment\"
 
-# Do we want to ensure the user (or another modulefile) has loaded the compiler?
-# Can be a dirname (any modulefile from that dir) or a specific version.
-# Multiple names on one line mean this OR that OR theothere
-# Multiple prereq lines mean prereq this AND prepreq that AND prereq theother
-#prereq  priv_libs/\$COMPNAME/zlib/1.2.11
+conflict libs/\$COMPNAME/hdf5
 
-# Do we want to prohibit use of other modulefiles (similar rules to above)
-# conflict libs/SOMELIB/older.version
+module load libs/\$COMPNAME/zlib/1.2.11
 
-# Do we want to load dependency modulefiles on behalf of the user?
-# You MIGHT HAVE TO REMOVE THE prereq MODULEFILES FROM ABOVE
-# module load libs/otherlib/7.8.9
-# module load ......
-module load priv_libs/\$COMPNAME/zlib/1.2.11
-
-set     APPDIR    /mnt/iusers01/support/mbessdl2/privatemodules_packages/csf3/libs/\$COMPNAME/\$APPNAME/\$APPVER
+set     APPDIR    $INROOT/\$COMPNAME/\$APPNAME/\$APPVER
 
 setenv        \${APPNAMECAPS}DIR      \$APPDIR
 setenv        \${APPNAMECAPS}_HOME    \$APPDIR

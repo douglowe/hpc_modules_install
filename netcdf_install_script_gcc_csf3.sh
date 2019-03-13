@@ -1,7 +1,9 @@
 cat /etc/redhat-release
 
 # Location of final root directory
-APPROOT=/mnt/iusers01/support/mbessdl2/privatemodules_packages/csf3/libs/gcc/netcdf
+INROOT=/opt/apps/libs
+#APPROOT=/mnt/iusers01/support/mbessdl2/privatemodules_packages/csf3/libs/gcc/netcdf
+APPROOT=$INROOT/gcc/netcdf
 
 APPVER=4.6.2
 APPDIR=$APPROOT/$APPVER
@@ -26,9 +28,12 @@ tar xzf ../archive/netcdf-c-${APPVER}.tar.gz
 cd netcdf-c-${APPVER}
 
 
-module load use.own
-module load priv_libs/gcc/zlib/1.2.11
-module load priv_libs/gcc/hdf5/1.8.21
+#module load use.own
+#module load priv_libs/gcc/zlib/1.2.11
+#module load priv_libs/gcc/hdf5/1.8.21
+module load libs/gcc/zlib/1.2.11
+module load libs/gcc/hdf5/1.8.21
+
 
 export LDFLAGS=-L$HDF5LIB
 export CPPFLAGS=-I$HDF5INCLUDE
@@ -71,7 +76,8 @@ make install 2>&1 | tee make-install-$APPVER.log
 chmod -R og+rX $APPROOT
 
 # module file location
-MDIR=/mnt/iusers01/support/mbessdl2/privatemodules/priv_libs/gcc/netcdf
+#MDIR=/mnt/iusers01/support/mbessdl2/privatemodules/priv_libs/gcc/netcdf
+MDIR=/opt/apps/modules/libs/gcc/netcdf
 
 
 #sudo mkdir $MDIR
@@ -80,7 +86,7 @@ mkdir $MDIR
 
 cd $MDIR
 
-MPATH=priv_libs/gcc/netcdf/${APPVER}
+MPATH=libs/gcc/netcdf/${APPVER}
 
 
 
@@ -121,23 +127,14 @@ set    COMPDIR        \${COMPNAME}
 
 module-whatis    \"Adds \$APPNAME \$APPVER to your environment\"
 
-# Do we want to ensure the user (or another modulefile) has loaded the compiler?
-# Can be a dirname (any modulefile from that dir) or a specific version.
-# Multiple names on one line mean this OR that OR theothere
-# Multiple prereq lines mean prereq this AND prepreq that AND prereq theother
-#prereq  priv_libs/\$COMPNAME/zlib/1.2.11
 
 # Do we want to prohibit use of other modulefiles (similar rules to above)
 # conflict libs/SOMELIB/older.version
 
-# Do we want to load dependency modulefiles on behalf of the user?
-# You MIGHT HAVE TO REMOVE THE prereq MODULEFILES FROM ABOVE
-# module load libs/otherlib/7.8.9
-# module load ......
-module load priv_libs/\$COMPNAME/zlib/1.2.11
-module load priv_libs/\$COMPNAME/hdf5/1.8.21
+#module load libs/\$COMPNAME/zlib/1.2.11
+module load libs/\$COMPNAME/hdf5/1.8.21
 
-set     APPDIR    /mnt/iusers01/support/mbessdl2/privatemodules_packages/csf3/libs/\$COMPNAME/\$APPNAME/\$APPVER
+set     APPDIR    $INROOT/\$COMPNAME/\$APPNAME/\$APPVER
 
 setenv        \${APPNAMECAPS}DIR      \$APPDIR
 setenv        \${APPNAMECAPS}_HOME    \$APPDIR

@@ -1,7 +1,9 @@
 cat /etc/redhat-release
 
 # Location of final root directory
-APPROOT=/mnt/iusers01/support/mbessdl2/privatemodules_packages/csf3/libs/gcc/libpng
+INROOT=/opt/apps/libs
+#APPROOT=/mnt/iusers01/support/mbessdl2/privatemodules_packages/csf3/libs/gcc/libpng
+APPROOT=$INROOT/gcc/libpng
 
 APPVER=1.6.36
 APPDIR=$APPROOT/$APPVER
@@ -26,8 +28,8 @@ tar xzf ../archive/libpng-${APPVER}.tar.gz
 cd libpng-${APPVER}
 
 
-module load use.own
-module load priv_libs/gcc/zlib/1.2.11
+#module load use.own
+module load libs/gcc/zlib/1.2.11
 
 export ZLIBINC=$ZLIBINCLUDE
 export LDFLAGS=-L$ZLIBLIB
@@ -41,10 +43,11 @@ make install 2>&1 | tee make-install-$APPVER.log
 
 
 #sudo chmod -R og+rX $APPROOT
-chmod -R og+rX $APPROOT
+chmod -R og+rX $APPDIR
 
 # module file location
-MDIR=/mnt/iusers01/support/mbessdl2/privatemodules/priv_libs/gcc/libpng
+#MDIR=/mnt/iusers01/support/mbessdl2/privatemodules/priv_libs/gcc/libpng
+MDIR=/opt/apps/modules/libs/gcc/libpng
 
 
 #sudo mkdir $MDIR
@@ -103,22 +106,9 @@ set    COMPDIR        \${COMPNAME}
 
 module-whatis    \"Adds \$APPNAME \$APPVER to your environment\"
 
-# Do we want to ensure the user (or another modulefile) has loaded the compiler?
-# Can be a dirname (any modulefile from that dir) or a specific version.
-# Multiple names on one line mean this OR that OR theothere
-# Multiple prereq lines mean prereq this AND prepreq that AND prereq theother
-#prereq  priv_libs/\$COMPNAME/zlib/1.2.11
+module load libs/\$COMPNAME/zlib/1.2.11
 
-# Do we want to prohibit use of other modulefiles (similar rules to above)
-# conflict libs/SOMELIB/older.version
-
-# Do we want to load dependency modulefiles on behalf of the user?
-# You MIGHT HAVE TO REMOVE THE prereq MODULEFILES FROM ABOVE
-# module load libs/otherlib/7.8.9
-# module load ......
-module load priv_libs/\$COMPNAME/zlib/1.2.11
-
-set     APPDIR    /mnt/iusers01/support/mbessdl2/privatemodules_packages/csf3/libs/\$COMPNAME/\$APPNAME/\$APPVER
+set     APPDIR    $INROOT/\$COMPNAME/\$APPNAME/\$APPVER
 
 setenv        \${APPNAMECAPS}DIR      \$APPDIR
 setenv        \${APPNAMECAPS}_HOME    \$APPDIR

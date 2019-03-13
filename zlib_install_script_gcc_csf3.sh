@@ -1,7 +1,10 @@
 cat /etc/redhat-release
 
 # Location of final root directory
-APPROOT=/mnt/iusers01/support/mbessdl2/privatemodules_packages/csf3/libs/gcc/zlib
+INROOT=/opt/apps/libs/
+#APPROOT=/mnt/iusers01/support/mbessdl2/privatemodules_packages/csf3/libs/gcc/zlib
+APPROOT=$INROOT/gcc/zlib
+
 
 APPVER=1.2.11
 APPDIR=$APPROOT/$APPVER
@@ -36,8 +39,9 @@ make install 2>&1 | tee make-install-$APPVER.log
 chmod -R og+rX $APPROOT
 
 # module file location
-MDIR=/mnt/iusers01/support/mbessdl2/privatemodules/priv_libs/gcc/zlib
-
+#MDIR=/mnt/iusers01/support/mbessdl2/privatemodules/priv_libs/gcc/zlib
+MROOT=/opt/apps/modules/libs
+MDIR=$MROOT/gcc/zlib
 
 #sudo mkdir $MDIR
 #sudo chown ${USER}. $MDIR
@@ -45,7 +49,8 @@ mkdir $MDIR
 
 cd $MDIR
 
-MPATH=priv_libs/gcc/zlib/${APPVER}
+#MPATH=priv_libs/gcc/zlib/${APPVER}
+MPATH=libs/gcc/zlib/${APPVER}
 
 
 #### module script
@@ -87,22 +92,7 @@ set    COMPDIR        \${COMPNAME}
 
 module-whatis    \"Adds \$APPNAME \$APPVER to your environment\"
 
-# Do we want to ensure the user (or another modulefile) has loaded the compiler?
-# Can be a dirname (any modulefile from that dir) or a specific version.
-# Multiple names on one line mean this OR that OR theothere
-# Multiple prereq lines mean prereq this AND prepreq that AND prereq theother
-#prereq  priv_libs/\$COMPNAME/zlib/1.2.11
-
-# Do we want to prohibit use of other modulefiles (similar rules to above)
-# conflict libs/SOMELIB/older.version
-
-# Do we want to load dependency modulefiles on behalf of the user?
-# You MIGHT HAVE TO REMOVE THE prereq MODULEFILES FROM ABOVE
-# module load libs/otherlib/7.8.9
-# module load ......
-#module load priv_libs/\$COMPNAME/zlib/1.2.11
-
-set     APPDIR    /mnt/iusers01/support/mbessdl2/privatemodules_packages/csf3/libs/\$COMPNAME/\$APPNAME/\$APPVER
+set     APPDIR    $MROOT/\$COMPNAME/\$APPNAME/\$APPVER
 
 setenv        \${APPNAMECAPS}DIR      \$APPDIR
 setenv        \${APPNAMECAPS}_HOME    \$APPDIR
