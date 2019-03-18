@@ -3,7 +3,7 @@
 # Location of final root directory
 APPROOT=/mnt/iusers01/support/mbessdl2/privatemodules_packages/csf3/libs/gcc/ncl
 
-APPVER=6.5.0
+APPVER=6.3.0
 APPDIR=$APPROOT/$APPVER
 
 #sudo mkdir $APPROOT
@@ -18,13 +18,14 @@ cd archive
 
 module load tools/env/proxy2
 
-wget https://www.earthsystemgrid.org/dataset/ncl.650.nodap/file/ncl_ncarg-6.5.0-CentOS7.5_64bit_nodap_gnu485.tar.gz
-#wget https://www.earthsystemgrid.org/dataset/ncl.650.nodap/file/ncl_ncarg-6.5.0-CentOS7.4_64bit_nodap_gnu730.tar.gz
 
+#wget https://www.earthsystemgrid.org/dataset/ncl.650.nodap/file/ncl_ncarg-6.5.0-CentOS7.5_64bit_nodap_gnu485.tar.gz
+#wget https://www.earthsystemgrid.org/dataset/ncl.650.nodap/file/ncl_ncarg-6.5.0-CentOS7.4_64bit_nodap_gnu730.tar.gz
+wget https://www.earthsystemgrid.org/dataset/ncl.630.1/file/ncl_ncarg-6.3.0.Linux_CentOS7.0_x86_64_nodap_gcc482.tar.gz
 
 cd ../$APPVER
 #tar xzf ../archive/ncl_ncarg-6.5.0-CentOS7.4_64bit_nodap_gnu730.tar.gz
-tar xzf ../archive/ncl_ncarg-6.5.0-CentOS7.5_64bit_nodap_gnu485.tar.gz
+tar xzf ../archive/ncl_ncarg-6.3.0.Linux_CentOS7.0_x86_64_nodap_gcc482.tar.gz
 
 
 
