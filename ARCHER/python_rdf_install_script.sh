@@ -88,7 +88,10 @@ prepend-path    PATH            \$APPDIR/bin
 module load use.own
 module load conda
 
-conda install xarray
+conda install ipython
+conda install xarray dask netCDF4 bottleneck
 
+conda install spyder
+conda update qt pyqt -c conda-forge
 
 
