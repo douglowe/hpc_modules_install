@@ -1,10 +1,12 @@
 # script for installing miniconda on RDF (using private modules)
+USEROOT=/nerc/n02/n02/lowe/
 
 # Location of final root directory
-PPPATH=/nerc/n02/n02/lowe/privatemodules_packages/
+PPPATH=${USEROOT}privatemodules_packages/
 APPROOT=${PPPATH}conda
 
 
+mkdir $APPROOT
 cd $APPROOT
 mkdir archive
 cd archive
@@ -29,7 +31,7 @@ bash Miniconda3-latest-Linux-x86_64.sh -b -f -p $APPDIR
 
 
 # module file location
-MDIR=/nerc/n02/n02/lowe/privatemodules/conda
+MDIR=${USEROOT}privatemodules/conda
 
 
 #sudo mkdir $MDIR
