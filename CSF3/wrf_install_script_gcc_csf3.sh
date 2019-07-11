@@ -9,16 +9,18 @@
 INROOT=/opt/apps/apps
 
 APPVER=4.0.3
+COMPILER=gcc
+
 
 # settings for modules file
-MDIR=/opt/apps/modules/apps/gcc/wrf
-MPATH=apps/gcc/wrf/${APPVER}
+MDIR=/opt/apps/modules/apps/${COMPILER}/wrf
+MPATH=apps/${COMPILER}/wrf/${APPVER}
 
 
 ## running code
 
 # set the install & executable directory
-APPROOT=$INROOT/gcc/wrf
+APPROOT=$INROOT/${COMPILER}/wrf
 APPDIR=$APPROOT/$APPVER
 
 # making the install directory (and change accessibility if needed)
@@ -41,8 +43,8 @@ git checkout v$APPVER
 
 # load modules needed for compiling the code
 # (loading netcdf should load hdf5 and zlib libraries too)
-module load libs/gcc/netcdf/4.6.2
-module load mpi/gcc/openmpi/3.1.4
+module load libs/${COMPILER}/netcdf/4.6.2
+module load mpi/${COMPILER}/openmpi/3.1.4
 
 # environmental settings
 export NETCDF=$NETCDFDIR
@@ -117,7 +119,7 @@ set    APPURL        http://www2.mmm.ucar.edu/wrf/users/
 set    APPCSFURL     http://ri.itservices.manchester.ac.uk/csf3/software/applications/\$APPNAME
 # Default gcc will be
 set    COMPVER        4.8.5
-set    COMPNAME    gcc
+set    COMPNAME     ${COMPILER}
 set    COMPDIR        \${COMPNAME}
 set    MPIVER         3.1.4
 
