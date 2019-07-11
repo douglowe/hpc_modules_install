@@ -80,7 +80,7 @@ cp -a ../build/WPS/ungrib/Variable_Tables run_dir/ungrib/
 cp -a ../build/WPS/metgrid/METGRID.TBL* run_dir/metgrid/
 
 
-
+### need some code creating the example batch scripts here???
 
 
 

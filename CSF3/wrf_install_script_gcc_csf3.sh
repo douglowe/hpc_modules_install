@@ -65,9 +65,6 @@ rm *.exe
 mv namelist.input namelist.input.example
 
 
-# create an executable script for copying the running directory
-cd ../bin
-
 
 ### need some code creating the example batch scripts here???
 
