@@ -72,12 +72,12 @@ mkdir bin
 cp ../build/WPS/*.exe ../build/WPS/*.csh bin/
 cp ../build/WPS/util/*exe bin/
 
-# create library directory, and copy library files
-mkdir lib
-mkdir lib/geogrid lib/ungrib lib/metgrid
-cp ../build/WPS/geogrid/GEOGRID.TBL.* lib/geogrid/
-cp -a ../build/WPS/ungrib/Variable_Tables lib/ungrib/
-cp ../build/WPS/metgrid/METGRID.TBL.* lib/metgrid/
+# create running directory template directory, and copy necessary setting files
+mkdir run_dir
+mkdir run_dir/geogrid run_dir/ungrib run_dir/metgrid
+cp -a ../build/WPS/geogrid/GEOGRID.TBL* run_dir/geogrid/
+cp -a ../build/WPS/ungrib/Variable_Tables run_dir/ungrib/
+cp -a ../build/WPS/metgrid/METGRID.TBL* run_dir/metgrid/
 
 
 
@@ -127,8 +127,8 @@ proc ModulesHelp { } {
 }
 
 set    APPVER         ${APPVER}
-set    APPNAME        wrf
-set    APPNAMECAPS    WRF
+set    APPNAME        wps
+set    APPNAMECAPS    WPS
 set    APPURL        http://www2.mmm.ucar.edu/wrf/users/
 set    APPCSFURL     http://ri.itservices.manchester.ac.uk/csf3/software/applications/\$APPNAME
 # Default gcc will be
@@ -142,6 +142,8 @@ module-whatis    \"Adds \$APPNAME \$APPVER to your environment\"
 # load required modules
 module load libs/\$COMPNAME/netcdf/4.6.2
 module load mpi/\$COMPNAME/openmpi/3.1.4
+module load libs/\$COMPNAME/jasper/2.0.14 
+module load libs/\$COMPNAME/libpng/1.6.36
 
 set     APPDIR    $INROOT/\$COMPNAME/\$APPNAME/\$APPVER
 
@@ -149,6 +151,7 @@ setenv        \${APPNAMECAPS}DIR      \$APPDIR
 setenv        \${APPNAMECAPS}_HOME    \$APPDIR
 setenv        \${APPNAMECAPS}BIN      \$APPDIR/bin
 setenv        \${APPNAMECAPS}_RUNDIR  \$APPDIR/run_dir
+setenv        \${APPNAMECAPS}_GEOG    /mnt/data-sets/wrf-geog/4.0
 
 # Typical env vars needed to run an app
 prepend-path    PATH              \$APPDIR/bin

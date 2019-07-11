@@ -69,6 +69,7 @@ mv namelist.input namelist.input.example
 cd ../bin
 
 
+### need some code creating the example batch scripts here???
 
 
 
