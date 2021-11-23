@@ -45,7 +45,7 @@ make install 2>&1 | tee make-install-$APPVER.log
 chmod -R og+rX $APPROOT
 
 # module file location
-MDIR=/mnt/iusers01/support/mbessdl2/privatemodules/priv_libs/gcc/expat
+MDIR=/mnt/iusers01/support/mbessdl2/privatemodules/priv_libs/gcc/extrae
 
 
 #sudo mkdir $MDIR
@@ -54,7 +54,7 @@ mkdir $MDIR
 
 cd $MDIR
 
-MPATH=priv_libs/gcc/expat/${APPVER}
+MPATH=priv_libs/gcc/extrae/${APPVER}
 
 
 #### module script
@@ -85,9 +85,9 @@ proc ModulesHelp { } {
 }
 
 set    APPVER         ${APPVER}
-set    APPNAME        expat
-set    APPNAMECAPS    EXPAT
-set    APPURL        https://github.com/libexpat/libexpat
+set    APPNAME        extrae
+set    APPNAMECAPS    EXTRAE
+set    APPURL        https://tools.bsc.es/extrae
 set    APPCSFURL    http://ri.itservices.manchester.ac.uk/csf3/software/libraries/$APPNAME
 # Default gcc will be
 set    COMPVER        4.8.5
@@ -100,7 +100,7 @@ module-whatis    \"Adds \$APPNAME \$APPVER to your environment\"
 # Can be a dirname (any modulefile from that dir) or a specific version.
 # Multiple names on one line mean this OR that OR theothere
 # Multiple prereq lines mean prereq this AND prepreq that AND prereq theother
-#prereq  priv_libs/\$COMPNAME/zlib/1.2.11
+#prereq  mpi/gcc/openmpi/4.1.0
 
 # Do we want to prohibit use of other modulefiles (similar rules to above)
 # conflict libs/SOMELIB/older.version
@@ -109,7 +109,7 @@ module-whatis    \"Adds \$APPNAME \$APPVER to your environment\"
 # You MIGHT HAVE TO REMOVE THE prereq MODULEFILES FROM ABOVE
 # module load libs/otherlib/7.8.9
 # module load ......
-#module load priv_libs/\$COMPNAME/zlib/1.2.11
+module load mpi/\${COMPNAME}/openmpi/4.1.0
 
 set     APPDIR    /mnt/iusers01/support/mbessdl2/privatemodules_packages/csf3/libs/\$COMPNAME/\$APPNAME/\$APPVER
 
@@ -126,7 +126,6 @@ prepend-path    CPATH             \$APPDIR/include
 prepend-path    LIBRARY_PATH      \$APPDIR/lib
 prepend-path    LD_LIBRARY_PATH   \$APPDIR/lib
 prepend-path    PATH              \$APPDIR/bin
-prepend-path    MANPATH           \$APPDIR/share/man
 # Add any other vars your need...
 " > $APPVER
 
