@@ -72,7 +72,7 @@ set    APPVER         ${APPVER}
 set    APPNAME        conda
 set    APPNAMECAPS    CONDA
 
-module-whatis    "Adds \$APPNAME \$APPVER to your environment"
+module-whatis    \"Adds \$APPNAME \$APPVER to your environment\"
 
 set     APPDIR           /work/n02/n02/lowe/privatemodules_packages/\$APPNAME/\$APPVER
 
