@@ -5,8 +5,8 @@ INROOT=/opt/apps/libs/
 #APPROOT=/mnt/iusers01/support/mbessdl2/privatemodules_packages/csf3/libs/gcc/hdf5
 APPROOT=$INROOT/gcc/hdf5
 
-APPBASE=1.8
-APPVER=$APPBASE.21
+APPBASE=1.14
+APPVER=$APPBASE.1
 #APPBASE=1.10
 #APPVER=$APPBASE.4
 APPDIR=$APPROOT/$APPVER
@@ -25,17 +25,18 @@ cd archive
 
 module load tools/env/proxy2
 
-wget https://support.hdfgroup.org/ftp/HDF5/releases/hdf5-${APPBASE}/hdf5-${APPVER}/src/hdf5-${APPVER}.tar.gz
+wget https://support.hdfgroup.org/ftp/HDF5/releases/hdf5-${APPBASE}/hdf5-${APPVER}/src/hdf5-${APPVER}-2.tar.gz
 
 cd ../build
-tar xzf ../archive/hdf5-${APPVER}.tar.gz
+tar xzf ../archive/hdf5-${APPVER}-2.tar.gz
 
-cd hdf5-${APPVER}
+cd hdf5-${APPVER}-2
 
 
 #module load use.own
 #module load priv_libs/gcc/zlib/1.2.11
-module load libs/gcc/zlib/1.2.11
+module load compilers/gcc/8.2.0
+module load libs/gcc/zlib/1.2.13
 
 ./configure --prefix=$APPDIR --enable-fortran --enable-cxx --with-zlib=$ZLIB_HOME/include,$ZLIB_HOME/lib 2>&1 | tee ../config-$APPVER.log
 make 2>&1 | tee make-$APPVER.log
@@ -103,7 +104,7 @@ set    APPNAMECAPS    HDF5
 set    APPURL        https://support.hdfgroup.org/HDF5/
 set    APPCSFURL    http://ri.itservices.manchester.ac.uk/csf3/software/libraries/$APPNAME
 # Default gcc will be
-set    COMPVER        4.8.5
+set    COMPVER        8.2.0
 set    COMPNAME    gcc
 set    COMPDIR        \${COMPNAME}
 
@@ -111,6 +112,7 @@ module-whatis    \"Adds \$APPNAME \$APPVER to your environment\"
 
 conflict libs/\$COMPNAME/hdf5
 
+module load compilers/\$COMPNAME/8.2.0
 module load libs/\$COMPNAME/zlib/1.2.11
 
 set     APPDIR    $INROOT/\$COMPNAME/\$APPNAME/\$APPVER
