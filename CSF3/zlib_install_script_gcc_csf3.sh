@@ -98,7 +98,7 @@ conflict libs/\$COMPNAME/zlib
 
 module load compilers/\$COMPNAME/8.2.0
 
-set     APPDIR    $MROOT/\$COMPNAME/\$APPNAME/\$APPVER
+set     APPDIR    $INROOT/\$COMPNAME/\$APPNAME/\$APPVER
 
 setenv        \${APPNAMECAPS}DIR      \$APPDIR
 setenv        \${APPNAMECAPS}_HOME    \$APPDIR
