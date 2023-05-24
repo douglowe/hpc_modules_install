@@ -6,13 +6,12 @@ INROOT=/opt/apps/libs/
 APPROOT=$INROOT/gcc/zlib
 
 
-APPVER=1.2.11
+APPVER=1.2.13
 APPDIR=$APPROOT/$APPVER
 
 #sudo mkdir $APPROOT
 #sudo chown ${USER}. $APPROOT
 mkdir $APPROOT
-chown ${USER}. $APPROOT
 
 
 cd $APPROOT
@@ -27,6 +26,9 @@ cd ../build
 tar xzf ../archive/zlib-${APPVER}.tar.gz
 
 cd zlib-${APPVER}
+
+# load require modules
+module load compilers/gcc/8.2.0
 
 
 ./configure --prefix=$APPDIR 2>&1 | tee ../config-$APPVER.log
@@ -86,11 +88,15 @@ set    APPNAMECAPS    ZLIB
 set    APPURL        https://www.zlib.net
 set    APPCSFURL    http://ri.itservices.manchester.ac.uk/csf3/software/libraries/$APPNAME
 # Default gcc will be
-set    COMPVER        4.8.5
+set    COMPVER        8.2.0
 set    COMPNAME    gcc
 set    COMPDIR        \${COMPNAME}
 
 module-whatis    \"Adds \$APPNAME \$APPVER to your environment\"
+
+conflict libs/\$COMPNAME/zlib
+
+module load compilers/\$COMPNAME/8.2.0
 
 set     APPDIR    $MROOT/\$COMPNAME/\$APPNAME/\$APPVER
 
