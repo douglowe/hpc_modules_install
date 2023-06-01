@@ -1,14 +1,14 @@
 cat /etc/redhat-release
 
 # Location of final root directory
-#INROOT=/opt/apps/libs/
-INROOT=/mnt/iusers01/support/mbessdl2/privatemodules_packages/csf3/libs
-APPROOT=$INROOT/intel/hdf5
+INROOT=/opt/apps/libs/
+#INROOT=/mnt/iusers01/support/mbessdl2/privatemodules_packages/csf3/libs
+APPROOT=$INROOT/intel-19.1/hdf5
 
-APPBASE=1.8
-APPVER=$APPBASE.21
-#APPBASE=1.10
-#APPVER=$APPBASE.4
+#APPBASE=1.8
+#APPVER=$APPBASE.21
+APPBASE=1.14
+APPVER=$APPBASE.1
 APPDIR=$APPROOT/$APPVER
 
 #sudo mkdir $APPROOT
@@ -25,18 +25,18 @@ cd archive
 
 module load tools/env/proxy2
 
-wget https://support.hdfgroup.org/ftp/HDF5/releases/hdf5-${APPBASE}/hdf5-${APPVER}/src/hdf5-${APPVER}.tar.gz
+wget https://support.hdfgroup.org/ftp/HDF5/releases/hdf5-${APPBASE}/hdf5-${APPVER}/src/hdf5-${APPVER}-2.tar.gz
 
 cd ../build
-tar xzf ../archive/hdf5-${APPVER}.tar.gz
+tar xzf ../archive/hdf5-${APPVER}-2.tar.gz
 
-cd hdf5-${APPVER}
+cd hdf5-${APPVER}-2
 
 
 #module load use.own
-#module load priv_libs/gcc/zlib/1.2.11
-module load compilers/intel/17.0.7
-module load libs/gcc/zlib/1.2.11
+module load compilers/intel/19.1.2
+#module load priv_libs/intel-18.0/zlib/1.2.13
+module load libs/intel-19.1/zlib/1.2.13
 
 ./configure --prefix=$APPDIR --enable-fortran --enable-cxx --with-zlib=$ZLIB_HOME/include,$ZLIB_HOME/lib 2>&1 | tee ../config-$APPVER.log
 make 2>&1 | tee make-$APPVER.log
@@ -49,9 +49,9 @@ chmod -R og+rX $APPDIR
 
 # module file location
 #MDIR=/mnt/iusers01/support/mbessdl2/privatemodules/priv_libs/gcc/hdf5
-#MROOT=/opt/apps/modules/libs
-MROOT=/mnt/iusers01/support/mbessdl2/privatemodules/priv_libs
-MDIR=$MROOT/intel/hdf5
+MROOT=/opt/apps/modules/libs
+#MROOT=/mnt/iusers01/support/mbessdl2/privatemodules/priv_libs
+MDIR=$MROOT/intel-19.1/hdf5
 
 
 #sudo mkdir $MDIR
@@ -60,8 +60,8 @@ mkdir $MDIR
 
 cd $MDIR
 
-MPATH=priv_libs/intel/hdf5/${APPVER}
-#MPATH=libs/intel/hdf5/${APPVER}
+#MPATH=priv_libs/intel-18.0/hdf5/${APPVER}
+MPATH=libs/intel-19.1/hdf5/${APPVER}
 
 
 
@@ -105,17 +105,18 @@ set    APPNAMECAPS    HDF5
 set    APPURL        https://support.hdfgroup.org/HDF5/
 set    APPCSFURL    http://ri.itservices.manchester.ac.uk/csf3/software/libraries/$APPNAME
 # Default gcc will be
-set    COMPVER        17.0.7
+set    COMPVER        19.1.2
 set    COMPNAME    intel
-set    COMPDIR        \${COMPNAME}
+set    COMPDIR        \${COMPNAME}-19.1
 
 module-whatis    \"Adds \$APPNAME \$APPVER to your environment\"
 
-conflict libs/\$COMPNAME/hdf5
+conflict libs/\$COMPDIR/hdf5
 
-module load libs/gcc/zlib/1.2.11
+module load compilers/\${COMPNAME}/\${COMPVER}
+module load libs/\${COMPDIR}/zlib/1.2.13
 
-set     APPDIR    $INROOT/\$COMPNAME/\$APPNAME/\$APPVER
+set     APPDIR    $INROOT/\$COMPDIR/\$APPNAME/\$APPVER
 
 setenv        \${APPNAMECAPS}DIR      \$APPDIR
 setenv        \${APPNAMECAPS}_HOME    \$APPDIR
