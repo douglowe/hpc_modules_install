@@ -8,7 +8,7 @@
 ## configuration settings
 INROOT=/opt/apps/apps
 
-APPVER=4.0.3
+APPVER=4.5
 COMPILER=gcc
 
 
@@ -35,16 +35,17 @@ cd build
 
 # download the WRF code
 module load tools/env/proxy2
-git clone https://github.com/UoMResearchIT/WRF.git
+wget https://github.com/wrf-model/WRF/releases/download/v${APPVER}/v${APPVER}.tar.gz
 
-# checkout the specific version that we want
+mkdir WRF
 cd WRF
-git checkout v$APPVER
+tar zxvf ../v${APPVER}.tar.gz --strip-components=1 
 
 # load modules needed for compiling the code
 # (loading netcdf should load hdf5 and zlib libraries too)
-module load libs/${COMPILER}/netcdf/4.6.2
-module load mpi/${COMPILER}/openmpi/3.1.4
+module load compilers/gcc/8.2.0
+module load libs/${COMPILER}/netcdf/4.9.2
+module load mpi/${COMPILER}/openmpi/4.1.2-gcc-8.2.0
 
 # environmental settings
 export NETCDF=$NETCDFDIR
@@ -118,16 +119,17 @@ set    APPNAMECAPS    WRF
 set    APPURL        http://www2.mmm.ucar.edu/wrf/users/
 set    APPCSFURL     http://ri.itservices.manchester.ac.uk/csf3/software/applications/\$APPNAME
 # Default gcc will be
-set    COMPVER        4.8.5
+set    COMPVER        8.2.0
 set    COMPNAME     ${COMPILER}
 set    COMPDIR        \${COMPNAME}
-set    MPIVER         3.1.4
+set    MPIVER         4.1.2
 
 module-whatis    \"Adds \$APPNAME \$APPVER to your environment\"
 
 # load required modules
-module load libs/\$COMPNAME/netcdf/4.6.2
-module load mpi/\$COMPNAME/openmpi/3.1.4
+module load compilers/\$COMPNAME/\$COMPVER
+module load libs/\$COMPNAME/netcdf/4.9.2
+module load mpi/\$COMPNAME/openmpi/4.1.2-gcc-8.2.0
 
 set     APPDIR    $INROOT/\$COMPNAME/\$APPNAME/\$APPVER
 
