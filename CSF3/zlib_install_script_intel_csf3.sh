@@ -2,8 +2,9 @@ cat /etc/redhat-release
 
 # Location of final root directory
 INROOT=/opt/apps/libs/
+#INROOT=/mnt/iusers01/support/mbessdl2/privatemodules_packages/csf3/libs
 #APPROOT=/mnt/iusers01/support/mbessdl2/privatemodules_packages/csf3/libs/gcc/zlib
-APPROOT=$INROOT/gcc/zlib
+APPROOT=$INROOT/intel-19.1/zlib
 
 
 APPVER=1.2.13
@@ -28,7 +29,7 @@ tar xzf ../archive/zlib-${APPVER}.tar.gz
 cd zlib-${APPVER}
 
 # load require modules
-module load compilers/gcc/8.2.0
+module load compilers/intel/19.1.2
 
 
 ./configure --prefix=$APPDIR 2>&1 | tee ../config-$APPVER.log
@@ -42,8 +43,9 @@ chmod -R og+rX $APPROOT
 
 # module file location
 #MDIR=/mnt/iusers01/support/mbessdl2/privatemodules/priv_libs/gcc/zlib
+#MROOT=/mnt/iusers01/support/mbessdl2/privatemodules/priv_libs
 MROOT=/opt/apps/modules/libs
-MDIR=$MROOT/gcc/zlib
+MDIR=$MROOT/intel-19.1/zlib
 
 #sudo mkdir $MDIR
 #sudo chown ${USER}. $MDIR
@@ -51,8 +53,8 @@ mkdir $MDIR
 
 cd $MDIR
 
-#MPATH=priv_libs/gcc/zlib/${APPVER}
-MPATH=libs/gcc/zlib/${APPVER}
+#MPATH=priv_libs/intel-18.0/zlib/${APPVER}
+MPATH=libs/intel-19.1/zlib/${APPVER}
 
 
 #### module script
@@ -88,15 +90,15 @@ set    APPNAMECAPS    ZLIB
 set    APPURL        https://www.zlib.net
 set    APPCSFURL    http://ri.itservices.manchester.ac.uk/csf3/software/libraries/$APPNAME
 # Default gcc will be
-set    COMPVER        8.2.0
-set    COMPNAME    gcc
-set    COMPDIR        \${COMPNAME}
+set    COMPVER        19.1.2
+set    COMPNAME    intel
+set    COMPDIR        \${COMPNAME}-19.1
 
 module-whatis    \"Adds \$APPNAME \$APPVER to your environment\"
 
-conflict libs/\$COMPNAME/zlib
+conflict libs/\$COMPDIR/zlib
 
-module load compilers/\$COMPNAME/8.2.0
+module load compilers/\$COMPNAME/\$COMPVER
 
 set     APPDIR    $INROOT/\$COMPNAME/\$APPNAME/\$APPVER
 
