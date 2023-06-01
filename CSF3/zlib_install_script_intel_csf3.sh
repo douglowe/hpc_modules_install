@@ -2,13 +2,11 @@ cat /etc/redhat-release
 
 # Location of final root directory
 INROOT=/opt/apps/libs/
-#APPROOT=/mnt/iusers01/support/mbessdl2/privatemodules_packages/csf3/libs/gcc/hdf5
-APPROOT=$INROOT/gcc/hdf5
+#APPROOT=/mnt/iusers01/support/mbessdl2/privatemodules_packages/csf3/libs/gcc/zlib
+APPROOT=$INROOT/gcc/zlib
 
-#APPBASE=1.8
-#APPVER=$APPBASE.23
-APPBASE=1.14
-APPVER=$APPBASE.1
+
+APPVER=1.2.13
 APPDIR=$APPROOT/$APPVER
 
 #sudo mkdir $APPROOT
@@ -20,38 +18,32 @@ cd $APPROOT
 mkdir $APPVER archive build
 cd archive
 
-### not doing the above tasks, as we are sharing space with another admin - so
-### look in archive/mbessdl2 and build/mbessdl2 instead
-
 module load tools/env/proxy2
 
-wget https://support.hdfgroup.org/ftp/HDF5/releases/hdf5-${APPBASE}/hdf5-${APPVER}/src/hdf5-${APPVER}.tar.gz
+wget https://www.zlib.net/zlib-${APPVER}.tar.gz
 
 cd ../build
-tar xzf ../archive/hdf5-${APPVER}.tar.gz
+tar xzf ../archive/zlib-${APPVER}.tar.gz
 
-cd hdf5-${APPVER}
+cd zlib-${APPVER}
 
-
-#module load use.own
-#module load priv_libs/gcc/zlib/1.2.11
+# load require modules
 module load compilers/gcc/8.2.0
-module load libs/gcc/zlib/1.2.13
 
-./configure --prefix=$APPDIR --enable-fortran --enable-cxx --with-zlib=$ZLIB_HOME/include,$ZLIB_HOME/lib 2>&1 | tee ../config-$APPVER.log
+
+./configure --prefix=$APPDIR 2>&1 | tee ../config-$APPVER.log
 make 2>&1 | tee make-$APPVER.log
 make check 2>&1 | tee make-check-$APPVER.log
 make install 2>&1 | tee make-install-$APPVER.log
 
 
 #sudo chmod -R og+rX $APPROOT
-chmod -R og+rX $APPDIR
+chmod -R og+rX $APPROOT
 
 # module file location
-#MDIR=/mnt/iusers01/support/mbessdl2/privatemodules/priv_libs/gcc/hdf5
+#MDIR=/mnt/iusers01/support/mbessdl2/privatemodules/priv_libs/gcc/zlib
 MROOT=/opt/apps/modules/libs
-MDIR=$MROOT/gcc/hdf5
-
+MDIR=$MROOT/gcc/zlib
 
 #sudo mkdir $MDIR
 #sudo chown ${USER}. $MDIR
@@ -59,16 +51,8 @@ mkdir $MDIR
 
 cd $MDIR
 
-#MPATH=priv_libs/gcc/hdf5/${APPVER}
-MPATH=libs/gcc/hdf5/${APPVER}
-
-
-
-
-
-
-
-
+#MPATH=priv_libs/gcc/zlib/${APPVER}
+MPATH=libs/gcc/zlib/${APPVER}
 
 
 #### module script
@@ -99,9 +83,9 @@ proc ModulesHelp { } {
 }
 
 set    APPVER         ${APPVER}
-set    APPNAME        hdf5
-set    APPNAMECAPS    HDF5
-set    APPURL        https://support.hdfgroup.org/HDF5/
+set    APPNAME        zlib
+set    APPNAMECAPS    ZLIB
+set    APPURL        https://www.zlib.net
 set    APPCSFURL    http://ri.itservices.manchester.ac.uk/csf3/software/libraries/$APPNAME
 # Default gcc will be
 set    COMPVER        8.2.0
@@ -110,10 +94,9 @@ set    COMPDIR        \${COMPNAME}
 
 module-whatis    \"Adds \$APPNAME \$APPVER to your environment\"
 
-conflict libs/\$COMPNAME/hdf5
+conflict libs/\$COMPNAME/zlib
 
 module load compilers/\$COMPNAME/8.2.0
-module load libs/\$COMPNAME/zlib/1.2.13
 
 set     APPDIR    $INROOT/\$COMPNAME/\$APPNAME/\$APPVER
 
@@ -133,3 +116,5 @@ prepend-path    PATH              \$APPDIR/bin
 prepend-path    MANPATH           \$APPDIR/share/man
 # Add any other vars your need...
 " > $APPVER
+
+
