@@ -6,7 +6,7 @@ INROOT=/opt/apps/libs
 APPROOT=$INROOT/gcc/jasper
 
 
-APPVER=2.0.14
+APPVER=2.0.33
 APPDIR=$APPROOT/$APPVER
 
 #sudo mkdir $APPROOT
@@ -21,7 +21,8 @@ cd archive
 
 module load tools/env/proxy2
 
-wget http://www.ece.uvic.ca/~frodo/jasper/software/jasper-${APPVER}.tar.gz
+#wget http://www.ece.uvic.ca/~frodo/jasper/software/jasper-${APPVER}.tar.gz
+wget https://github.com/jasper-software/jasper/releases/download/version-${APPVER}/jasper-${APPVER}.tar.gz
 
 cd ../build
 tar xzf ../archive/jasper-${APPVER}.tar.gz
@@ -30,6 +31,8 @@ cd jasper-${APPVER}
 
 
 module load tools/gcc/cmake/3.13.2
+
+module load compilers/gcc/8.2.0
 
 
 SOURCE_DIR=${APPROOT}/build/jasper-${APPVER}
@@ -98,11 +101,13 @@ set    APPNAMECAPS    JASPER
 set    APPURL        http://www.ece.uvic.ca/~frodo/jasper/
 set    APPCSFURL    http://ri.itservices.manchester.ac.uk/csf3/software/libraries/$APPNAME
 # Default gcc will be
-set    COMPVER        4.8.5
+set    COMPVER        8.2.0
 set    COMPNAME    gcc
 set    COMPDIR        \${COMPNAME}
 
 module-whatis    \"Adds \$APPNAME \$APPVER to your environment\"
+
+module load compilers/\$COMPNAME/8.2.0
 
 set     APPDIR    $INROOT/\$COMPNAME/\$APPNAME/\$APPVER
 
