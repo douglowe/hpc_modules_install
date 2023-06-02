@@ -5,7 +5,7 @@ INROOT=/opt/apps/libs
 #APPROOT=/mnt/iusers01/support/mbessdl2/privatemodules_packages/csf3/libs/gcc/libpng
 APPROOT=$INROOT/gcc/libpng
 
-APPVER=1.6.36
+APPVER=1.6.39
 APPDIR=$APPROOT/$APPVER
 
 #sudo mkdir $APPROOT
@@ -20,7 +20,7 @@ cd archive
 module load tools/env/proxy2
 
 
-wget https://sourceforge.net/projects/libpng/files/libpng16/${APPVER}/libpng-${APPVER}.tar.gz
+wget --no-check-certificate https://sourceforge.net/projects/libpng/files/libpng16/${APPVER}/libpng-${APPVER}.tar.gz
 
 cd ../build
 tar xzf ../archive/libpng-${APPVER}.tar.gz
@@ -29,7 +29,8 @@ cd libpng-${APPVER}
 
 
 #module load use.own
-module load libs/gcc/zlib/1.2.11
+module load compilers/gcc/8.2.0
+module load libs/gcc/zlib/1.2.13
 
 export ZLIBINC=$ZLIBINCLUDE
 export LDFLAGS=-L$ZLIBLIB
@@ -56,7 +57,7 @@ mkdir $MDIR
 
 cd $MDIR
 
-MPATH=priv_libs/gcc/libpng/${APPVER}
+MPATH=libs/gcc/libpng/${APPVER}
 
 
 
@@ -100,13 +101,15 @@ set    APPNAMECAPS    LIBPNG
 set    APPURL        http://www.libpng.org/pub/png/libpng.html
 set    APPCSFURL    http://ri.itservices.manchester.ac.uk/csf3/software/libraries/$APPNAME
 # Default gcc will be
-set    COMPVER        4.8.5
+set    COMPVER        8.2.0
 set    COMPNAME    gcc
 set    COMPDIR        \${COMPNAME}
 
 module-whatis    \"Adds \$APPNAME \$APPVER to your environment\"
 
-module load libs/\$COMPNAME/zlib/1.2.11
+module load compilers/\$COMPNAME/8.2.0
+module load libs/\$COMPNAME/zlib/1.2.13
+
 
 set     APPDIR    $INROOT/\$COMPNAME/\$APPNAME/\$APPVER
 
