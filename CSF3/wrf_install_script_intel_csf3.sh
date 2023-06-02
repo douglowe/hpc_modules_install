@@ -64,7 +64,8 @@ cp ../build/WRF/main/*.exe bin/
 cp -a ../build/WRF/run run_dir
 # copy running data, and delete/rename what's not wanted
 cd run_dir
-rm *.exe
+rm *.exe MPTABLE.TBL
+cp ../../build/WRF-Chem/phys/noahmp/parameters/MPTABLE.TBL .
 mv namelist.input namelist.input.example
 
 
@@ -130,7 +131,7 @@ module-whatis    \"Adds \$APPNAME \$APPVER to your environment\"
 module load libs/\$COMPDIR/netcdf/4.9.2
 module load mpi/\$COMPDIR/openmpi/4.1.1
 
-set     APPDIR    $INROOT/\$COMPNAME/\$APPNAME/\$APPVER
+set     APPDIR    $INROOT/\$COMPDIR/\$APPNAME/\$APPVER
 
 setenv        \${APPNAMECAPS}DIR      \$APPDIR
 setenv        \${APPNAMECAPS}_HOME    \$APPDIR
