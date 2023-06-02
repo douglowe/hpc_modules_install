@@ -66,11 +66,12 @@ export WRF_KPP=1
 # create operational directories, and copy executables
 cd $APPDIR
 mkdir bin
-cp ../build/WRF/main/*.exe bin/
-cp -a ../build/WRF/run run_dir
+cp ../build/WRF-Chem/main/*.exe bin/
+cp -a ../build/WRF-Chem/run run_dir
 # copy running data, and delete/rename what's not wanted
 cd run_dir
-rm *.exe
+rm *.exe MPTABLE.TBL
+cp ../../build/WRF-Chem/phys/noahmp/parameters/MPTABLE.TBL .
 mv namelist.input namelist.input.example
 
 
