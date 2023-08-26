@@ -53,6 +53,13 @@ export YACC="yacc -d"
 export WRF_CHEM=1
 export WRF_KPP=1
 
+#### fix the chemistry profile input code, so that CRIMECH can have an empty array
+sed 's/ny1:ny2,lo ) :: stor/ny1:ny2,0:lo ) :: stor/' chem/module_input_chem_data.F > module_input_chem_data.F.tmp
+sed '/stor(nx1:nx2,nz1:nz2,ny1:ny2,1:lo)/i\ \ \ \ \ \ stor(nx1:nx2,nz1:nz2,ny1:ny2,0) = 0.0' module_input_chem_data.F.tmp > module_input_chem_data.F.tmp2
+rm module_input_chem_data.F.tmp
+mv module_input_chem_data.F.tmp2 chem/module_input_chem_data.F
+
+
 # configuring the model (options 34, 1) #### THIS MUST BE RUN INTERACTIVELY
 ./configure
 
