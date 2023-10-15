@@ -92,11 +92,17 @@ make info 2>&1 | tee make_info.txt
 
 # make the library
 make 2>&1 | tee make_log.txt
+# This can be run in parallel - use the following command to load an interactive task (and load the settings above again)
+#qrsh -l short -pe smp.pe 6
 #make -j6 2>&1 | tee make_log.txt
 
 
 # check the build
 make check 2>&1 | tee make_check_log.txt
+
+# run all tests (extra checks?)
+#make build_all_tests 2>&1 | tee make_build_tests_log.txt
+#make run_all_tests 2>&1 | tee make_run_tests_log.txt
 
 # install the library
 make install 2>&1 | tee make_install_log.txt
@@ -181,7 +187,7 @@ setenv        \${APPNAMECAPS}DIR      \$APPDIR
 setenv        \${APPNAMECAPS}BIN      \$APPDIR/bin
 setenv        \${APPNAMECAPS}LIB      \$APPDIR/lib
 setenv        \${APPNAMECAPS}INCLUDE  \$APPDIR/include
-setenv        ESMFMKFILE              \$APPDIR/lib
+setenv        ESMFMKFILE              \$APPDIR/lib/esmf.mk
 
 # Typical env vars needed to run an app
 prepend-path    PATH              \$APPDIR/bin
