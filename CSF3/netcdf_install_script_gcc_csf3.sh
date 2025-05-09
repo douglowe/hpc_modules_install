@@ -1,7 +1,8 @@
 cat /etc/redhat-release
 
 # Location of final root directory
-INROOT=/opt/apps/libs
+#INROOT=/opt/apps/libs
+INROOT=/opt/apps/el9-fix/libs
 #APPROOT=/mnt/iusers01/support/mbessdl2/privatemodules_packages/csf3/libs/gcc/netcdf
 APPROOT=$INROOT/gcc/netcdf
 
@@ -87,7 +88,8 @@ chmod -R og+rX $APPROOT
 
 # module file location
 #MDIR=/mnt/iusers01/support/mbessdl2/privatemodules/priv_libs/gcc/netcdf
-MDIR=/opt/apps/modules/libs/gcc/netcdf
+#MDIR=/opt/apps/modules/libs/gcc/netcdf
+MDIR=/opt/apps/el9-fix/modules/libs/gcc/netcdf
 
 
 #sudo mkdir $MDIR

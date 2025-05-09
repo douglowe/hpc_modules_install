@@ -1,7 +1,8 @@
 cat /etc/redhat-release
 
 # Location of final root directory
-INROOT=/opt/apps/libs
+#INROOT=/opt/apps/libs
+INROOT=/opt/apps/el9-fix/libs
 #APPROOT=/mnt/iusers01/support/mbessdl2/privatemodules_packages/csf3/libs/gcc/libpng
 APPROOT=$INROOT/gcc/libpng
 
@@ -17,7 +18,7 @@ cd $APPROOT
 mkdir $APPVER archive build
 cd archive
 
-module load tools/env/proxy2
+#module load tools/env/proxy2
 
 
 wget --no-check-certificate https://sourceforge.net/projects/libpng/files/libpng16/${APPVER}/libpng-${APPVER}.tar.gz
@@ -48,7 +49,8 @@ chmod -R og+rX $APPDIR
 
 # module file location
 #MDIR=/mnt/iusers01/support/mbessdl2/privatemodules/priv_libs/gcc/libpng
-MDIR=/opt/apps/modules/libs/gcc/libpng
+#MDIR=/opt/apps/modules/libs/gcc/libpng
+MDIR=/opt/apps/el9-fix/modules/libs/gcc/libpng
 
 
 #sudo mkdir $MDIR

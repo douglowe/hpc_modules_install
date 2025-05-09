@@ -1,7 +1,8 @@
 cat /etc/redhat-release
 
 # Location of final root directory
-INROOT=/opt/apps/libs/
+#INROOT=/opt/apps/libs
+INROOT=/opt/apps/el9-fix/libs
 #APPROOT=/mnt/iusers01/support/mbessdl2/privatemodules_packages/csf3/libs/gcc/hdf5
 APPROOT=$INROOT/gcc/hdf5
 
@@ -23,13 +24,15 @@ cd archive
 ### not doing the above tasks, as we are sharing space with another admin - so
 ### look in archive/mbessdl2 and build/mbessdl2 instead
 
-module load tools/env/proxy2
+#module load tools/env/proxy2
 
-wget https://support.hdfgroup.org/ftp/HDF5/releases/hdf5-${APPBASE}/hdf5-${APPVER}/src/hdf5-${APPVER}.tar.gz
+#wget https://support.hdfgroup.org/ftp/HDF5/releases/hdf5-${APPBASE}/hdf5-${APPVER}/src/hdf5-${APPVER}.tar.gz
+wget https://support.hdfgroup.org/releases/hdf5/v1_14/v1_14_1/downloads/hdf5-${APPVER}-2.tar.gz
 
 cd ../build
-tar xzf ../archive/hdf5-${APPVER}.tar.gz
+tar xzf ../archive/hdf5-${APPVER}-2.tar.gz
 
+mv hdf5-1.14.1-2 hdf5-1.14.1
 cd hdf5-${APPVER}
 
 
@@ -49,7 +52,8 @@ chmod -R og+rX $APPDIR
 
 # module file location
 #MDIR=/mnt/iusers01/support/mbessdl2/privatemodules/priv_libs/gcc/hdf5
-MROOT=/opt/apps/modules/libs
+#MROOT=/opt/apps/modules/libs
+MROOT=/opt/apps/el9-fix/modules/libs
 MDIR=$MROOT/gcc/hdf5
 
 

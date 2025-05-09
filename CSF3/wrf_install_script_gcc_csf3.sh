@@ -6,14 +6,16 @@
 #   user input.
 
 ## configuration settings
-INROOT=/opt/apps/apps
+#INROOT=/opt/apps/apps
+INROOT=/opt/apps/el9-fix/apps
 
 APPVER=4.5
 COMPILER=gcc
 
 
 # settings for modules file
-MDIR=/opt/apps/modules/apps/${COMPILER}/wrf
+#MDIR=/opt/apps/modules/apps/${COMPILER}/wrf
+MDIR=/opt/apps/el9-fix/modules/apps/${COMPILER}/wrf
 MPATH=apps/${COMPILER}/wrf/${APPVER}
 
 
@@ -34,7 +36,7 @@ mkdir $APPVER build
 cd build
 
 # download the WRF code
-module load tools/env/proxy2
+#module load tools/env/proxy2
 wget https://github.com/wrf-model/WRF/releases/download/v${APPVER}/v${APPVER}.tar.gz
 
 mkdir WRF
@@ -45,11 +47,12 @@ tar zxvf ../v${APPVER}.tar.gz --strip-components=1
 # (loading netcdf should load hdf5 and zlib libraries too)
 module load compilers/gcc/8.2.0
 module load libs/${COMPILER}/netcdf/4.9.2
-module load mpi/${COMPILER}/openmpi/4.1.2-gcc-8.2.0
+#module load mpi/${COMPILER}/openmpi/4.1.2-gcc-8.2.0
+module load mpi/${COMPILER}/openmpi/4.1.8-gcc-8.2.0
 
 # environmental settings
 export NETCDF=$NETCDFDIR
-
+export USENETCDFPAR=0
 
 # configuring the model (options 34, 1) #### THIS MUST BE RUN INTERACTIVELY
 ./configure
@@ -65,7 +68,7 @@ cp -a ../build/WRF/run run_dir
 # copy running data, and delete/rename what's not wanted
 cd run_dir
 rm *.exe MPTABLE.TBL
-cp ../../build/WRF-Chem/phys/noahmp/parameters/MPTABLE.TBL .
+cp ../../build/WRF/phys/noahmp/parameters/MPTABLE.TBL .
 mv namelist.input namelist.input.example
 
 
@@ -130,7 +133,7 @@ module-whatis    \"Adds \$APPNAME \$APPVER to your environment\"
 # load required modules
 module load compilers/\$COMPNAME/\$COMPVER
 module load libs/\$COMPNAME/netcdf/4.9.2
-module load mpi/\$COMPNAME/openmpi/4.1.2-gcc-8.2.0
+module load mpi/\$COMPNAME/openmpi/4.1.8-gcc-8.2.0
 
 set     APPDIR    $INROOT/\$COMPNAME/\$APPNAME/\$APPVER
 

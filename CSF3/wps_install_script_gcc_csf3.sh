@@ -6,13 +6,15 @@
 #   user input.
 
 ## configuration settings
-INROOT=/opt/apps/apps
+#INROOT=/opt/apps/apps
+INROOT=/opt/apps/el9-fix/apps
 
 APPVER=4.5
 COMPILER=gcc
 
 # settings for modules file
-MDIR=/opt/apps/modules/apps/gcc/wps
+#MDIR=/opt/apps/modules/apps/gcc/wps
+MDIR=/opt/apps/el9-fix/modules/apps/gcc/wps
 MPATH=apps/gcc/wps/${APPVER}
 
 # WRF directory, for use in compilation
@@ -35,7 +37,7 @@ mkdir $APPVER build archive
 cd archive
 
 # download the WRF code
-module load tools/env/proxy2
+#module load tools/env/proxy2
 #git clone https://github.com/UoMResearchIT/WPS.git
 wget https://github.com/wrf-model/WPS/archive/refs/tags/v${APPVER}.tar.gz
 
@@ -56,15 +58,19 @@ module load compilers/gcc/8.2.0
 module load libs/${COMPILER}/jasper/2.0.33
 module load libs/${COMPILER}/libpng/1.6.39
 module load libs/${COMPILER}/netcdf/4.9.2
-module load mpi/${COMPILER}/openmpi/4.1.2-gcc-8.2.0
+#module load mpi/${COMPILER}/openmpi/4.1.2-gcc-8.2.0
+module load mpi/${COMPILER}/openmpi/4.1.8-gcc-8.2.0
+
 
 
 # environmental settings
 export NETCDF=$NETCDFDIR
+export USENETCDFPAR=0
 export JASPERINC=$JASPERINCLUDE
 export WRFIO_NCD_LARGE_FILE_SUPPORT=1
 # NOTE - MPI_LIB is misused by compiler, so needs emptying before compilation
 export MPI_LIB=
+
 
 
 # configuring the model (option 3) #### THIS MUST BE RUN INTERACTIVELY
@@ -149,7 +155,7 @@ module-whatis    \"Adds \$APPNAME \$APPVER to your environment\"
 # load required modules
 module load compilers/\$COMPNAME/\$COMPVER
 module load libs/\$COMPNAME/netcdf/4.9.2
-module load mpi/\$COMPNAME/openmpi/4.1.2-gcc-8.2.0
+module load mpi/\$COMPNAME/openmpi/4.1.8-gcc-8.2.0
 module load libs/\$COMPNAME/jasper/2.0.33
 module load libs/\$COMPNAME/libpng/1.6.39
 
