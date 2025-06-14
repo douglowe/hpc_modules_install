@@ -5,22 +5,23 @@
 # This can't be run as a non-interactive job, as the configuration step requires
 #   user input.
 
-module load use.own
+#module load use.own
 
-INMOD=${HOME}/privatemodules/priv_apps
-INROOT=${HOME}/privatemodules_packages/csf3/apps
+#INMOD=${HOME}/privatemodules/priv_apps
+#INROOT=${HOME}/privatemodules_packages/csf3/apps
 
 ## configuration settings
-#INROOT=/opt/apps/apps
+INROOT=/opt/apps/apps
+
+
 
 APPVER=8.5
 COMPILER=gcc
 
 
 # settings for modules file
-MDIR=${INMOD}/${COMPILER}/esmf
-#MDIR=/opt/apps/modules/apps/${COMPILER}/esmf2
-MPATH=apps/${COMPILER}/wrf/${APPVER}
+#MDIR=${INMOD}/${COMPILER}/esmf
+MDIR=/opt/apps/modules/apps/${COMPILER}/esmf
 
 
 ## running code
@@ -55,12 +56,14 @@ cd esmf-${APPVER}.0
 # (loading netcdf should load hdf5 and zlib libraries too)
 module load compilers/gcc/8.2.0
 module load libs/${COMPILER}/netcdf/4.9.2
-module load mpi/${COMPILER}/openmpi/4.1.2-gcc-8.2.0
+module load mpi/${COMPILER}/openmpi/4.1.8-gcc-8.2.0
 
-module load libs/lapack/3.5.0/gcc-4.8.5
-#module load libs/blas/3.6.0/gcc-4.8.5
+#module load libs/gcc/lapack/3.5.0
+module load libs/gcc/lapack/3.12.1-gcc8.2.0
 
 module load tools/gcc/cmake/3.16.4
+
+module load libs/gcc/openssl/1.0.2k
 
 ## environmental settings
 export ESMF_DIR=$(pwd)
@@ -73,9 +76,9 @@ export ESMF_COMPILER="gfortran"
 
 export ESMF_NETCDF="nc-config"
 export ESMF_LAPACK="netlib"
-export ESMF_LAPACK_LIBPATH=${LAPACKLIB}
+export ESMF_LAPACK_LIBPATH="/opt/apps/libs/gcc/lapack/3.12.1-gcc8.2.0/lib64"
 
-export ESMF_INSTALL_PREFIX=${APPROOT}/${APPVER}
+export ESMF_INSTALL_PREFIX=${APPROOT}/${APPVER}.0
 # explicitly setting these directories, or the files are put in `lib\lib0\Linux.gfortran.64.openmpi.default` (for example)
 export ESMF_INSTALL_BINDIR=${ESMF_INSTALL_PREFIX}/bin
 export ESMF_INSTALL_LIBDIR=${ESMF_INSTALL_PREFIX}/lib
@@ -176,8 +179,8 @@ module-whatis    \"Adds \$APPNAME \$APPVER to your environment\"
 # load required modules
 module load compilers/\$COMPNAME/\$COMPVER
 module load libs/\$COMPNAME/netcdf/4.9.2
-module load mpi/\$COMPNAME/openmpi/4.1.2-gcc-8.2.0
-module load libs/lapack/3.5.0/gcc-4.8.5
+module load mpi/\$COMPNAME/openmpi/4.1.8-gcc-8.2.0
+module load libs/\$COMPNAME/lapack/3.12.1-gcc8.2.0
 
 
 
